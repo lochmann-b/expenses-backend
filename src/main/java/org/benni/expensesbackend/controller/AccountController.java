@@ -47,7 +47,7 @@ public class AccountController {
 	@DeleteMapping("api/accounts/{accountId}")
 	public ResponseEntity<Integer> eleteAccount(@PathVariable(name="accountId")int accountId) {
 		Account account = accountsService.findAccountForCurrentUser(accountId);
-		accountsService.delete(account);		
+		accountsService.deleteAccount(account);		
 		return new ResponseEntity<>(accountId, HttpStatus.OK);
 	}
 	
@@ -60,8 +60,7 @@ public class AccountController {
 		account.setStartDate(accountDTO.getStartDate());
 		account.setStartingBalanceInCents(accountDTO.getStartingBalanceInCents());
 		
-		accountsService.save(account);
-		return new AccountDTO(account);
+		return new AccountDTO(accountsService.saveAccount(account));
 	}
 
 	@PostMapping("api/accounts")
@@ -74,9 +73,8 @@ public class AccountController {
 		account.setOwner(user);
 		account.setStartDate(accountDTO.getStartDate());
 		account.setStartingBalanceInCents(accountDTO.getStartingBalanceInCents());
-		
-		accountsService.save(account);
-		return new AccountDTO(account);
+				
+		return new AccountDTO(accountsService.saveAccount(account));
 	}
 	
 }

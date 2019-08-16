@@ -11,6 +11,10 @@ public class MovementDTO {
 	private Date date;
 	private String description;
 	private int id;
+	
+	public MovementDTO() {
+		
+	}
 
 	public MovementDTO(Movement m) {
 		id = m.getId();
@@ -39,6 +43,20 @@ public class MovementDTO {
 	public int getId() {
 		return id;
 	}
+
+	public void setAmountInCents(int amountInCents) {
+		this.amountInCents = amountInCents;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 	
 	
 
