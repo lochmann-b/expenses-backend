@@ -2,7 +2,8 @@ package org.benni.expensesbackend.controller;
 
 import java.util.Map;
 
-import org.benni.expensesbackend.model.ExUser;
+import org.benni.expensesbackend.model.db.ExUser;
+import org.benni.expensesbackend.model.dto.UserDTO;
 import org.benni.expensesbackend.repositories.ExUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +23,7 @@ public class UserController {
 	
 	@PostMapping(path="api/user")
 	@ResponseBody
-	public ExUser registerUser(@RequestBody Map<String, Object> obj) {
+	public UserDTO registerUser(@RequestBody Map<String, Object> obj) {
 		String login = (String) obj.get("login");
 		String password = (String) obj.get("password");
 		String name = (String)obj.get("name");
@@ -34,7 +35,7 @@ public class UserController {
 		
 		this.userRepository.save(user);
 		
-		return user;		
+		return new UserDTO(user);		
 	}
 	
 }

@@ -1,5 +1,6 @@
-package org.benni.expensesbackend.model;
+package org.benni.expensesbackend.model.db;
 
+import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -22,6 +23,12 @@ public class Account {
 	
 	@OneToMany(mappedBy="account")
 	private Set<Movement> movements;
+	
+	@Column
+	private int startingBalanceInCents;
+	
+	@Column
+	Date startDate;
 	
 	@ManyToOne
 	private ExUser owner;
@@ -57,6 +64,24 @@ public class Account {
 	public void setOwner(ExUser owner) {
 		this.owner = owner;
 	}
+
+	public int getStartingBalanceInCents() {
+		return startingBalanceInCents;
+	}
+
+	public void setStartingBalanceInCents(int startingBalanceInCents) {
+		this.startingBalanceInCents = startingBalanceInCents;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	
 	
 	
 }

@@ -1,4 +1,4 @@
-package org.benni.expensesbackend.model;
+package org.benni.expensesbackend.model.db;
 
 import java.sql.Date;
 

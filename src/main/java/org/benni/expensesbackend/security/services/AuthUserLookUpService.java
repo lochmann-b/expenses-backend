@@ -1,6 +1,6 @@
 package org.benni.expensesbackend.security.services;
 
-import org.benni.expensesbackend.model.ExUser;
+import org.benni.expensesbackend.model.db.ExUser;
 import org.benni.expensesbackend.repositories.ExUserRepository;
 import org.benni.expensesbackend.security.User;
 import org.springframework.beans.factory.annotation.Autowired;
