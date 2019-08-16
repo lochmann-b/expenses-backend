@@ -2,6 +2,7 @@ package org.benni.expensesbackend.security;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -31,15 +32,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-		var auth = request.getHeader("Authorization");
-		var login = "";
-		var password = "";
+		String auth = request.getHeader("Authorization");
+		String login = "";
+		String password = "";
 		if (StringUtils.isNotEmpty(auth) && auth.startsWith("Basic")) {
-			var decoded = new String(Base64.getDecoder().decode(auth.replace("Basic ", "")));
+			String decoded = new String(Base64.getDecoder().decode(auth.replace("Basic ", "")));
 			login = decoded.substring(0, decoded.indexOf(":"));
 			password = decoded.substring(decoded.indexOf(":") + 1, decoded.length());
 		}
-		var authenticationToken = new UsernamePasswordAuthenticationToken(login, password);
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login, password);
 
 		return authenticationManager.authenticate(authenticationToken);
 	}
@@ -47,16 +48,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			FilterChain filterChain, Authentication authentication) {
-		var user = ((User) authentication.getPrincipal());
+		User user = ((User) authentication.getPrincipal());
 
-		var roles = user.getAuthorities()
+		List<String> roles = user.getAuthorities()
 				.stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toList());
 
-		var signingKey = SecurityConstants.JWT_SECRET.getBytes();
+		byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
-		var token = Jwts.builder()
+		String token = Jwts.builder()
 				.signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
 				.setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
 				.setIssuer(SecurityConstants.TOKEN_ISSUER)
