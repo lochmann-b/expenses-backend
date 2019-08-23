@@ -1,5 +1,6 @@
 package org.benni.expensesbackend.security;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			login = decoded.substring(0, decoded.indexOf(":"));
 			password = decoded.substring(decoded.indexOf(":") + 1, decoded.length());
 		}
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login, password);
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login,
+				password);
 
 		return authenticationManager.authenticate(authenticationToken);
 	}
@@ -68,5 +70,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.compact();
 
 		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+		try {
+			response.getWriter().write(SecurityConstants.TOKEN_PREFIX + token);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
