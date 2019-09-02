@@ -49,6 +49,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
+        if (StringUtils.isEmpty(token)) {
+        	token = request.getParameter("token");
+        }
+        
         if (StringUtils.isNotEmpty(token) && token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             try {
                 byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();

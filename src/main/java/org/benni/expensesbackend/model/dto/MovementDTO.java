@@ -1,10 +1,11 @@
 package org.benni.expensesbackend.model.dto;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import org.benni.expensesbackend.model.db.Movement;
 
-public class MovementDTO {
+public class MovementDTO implements Comparable<MovementDTO>{
 
 	private int accountId;
 	private int amountInCents;
@@ -54,6 +55,18 @@ public class MovementDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public int compareTo(MovementDTO o) {
+		int cp = o.getDate().compareTo(getDate());
+		if (cp == 0) {
+			cp = Optional.ofNullable(getDescription()).orElse("").compareTo(Optional.ofNullable(o.getDescription()).orElse(""));
+		}
+		if (cp == 0) {
+			return getId() - o.getId();
+		}
+		return cp;
 	}
 	
 	
